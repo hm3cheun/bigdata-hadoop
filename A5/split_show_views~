@@ -1,0 +1,37 @@
+show_views_file = sc.textFile("A3/input/join2_gennum?.txt")
+
+def split_show_views(line):
+    split = line.split(',')
+    show, views = split[0], split[1]
+    return (show, views)
+
+show_views = show_views_file.map(split_show_views)
+show_views.collect()
+
+show_channel_file = sc.textFile("A3/input/join2_genchan?.txt")
+
+def split_show_channel(line):
+split = line.split(',')
+show, channel = split[0], split[1]
+return (show, channel)
+
+show_channel = show_channel_file.map(split_show_channel)
+show_channel.collect()
+
+joined_dataset= show_views.join(show_channel)
+
+joined_dataset.collect()
+
+
+
+def extract_channel_views(line): 
+	channel, views= line[1][1], line [1][0]
+	return (channel, views)
+
+channel_views = joined_dataset.map(extract_channel_views)
+channel_views.take(5)
+
+def sum_views(a, b):
+return a + b
+
+channel_views.reduceByKey(sum_views).collect()

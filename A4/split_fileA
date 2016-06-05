@@ -1,0 +1,5 @@
+def split_fileA(line):
+    line = line.strip()
+    word, count = line.split(',')
+    count = int(count)
+    return (word, count)
